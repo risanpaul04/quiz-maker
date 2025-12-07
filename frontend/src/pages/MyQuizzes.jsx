@@ -17,12 +17,7 @@ const MyQuizzes = () => {
   const fetchMyQuizzes = async () => {
     try {
       const response = await quizAPI.getUserQuizzes();
-      console.log(response);
-      // const quizzes = await response.json();
-      // console.log(quizzes);
-      // setQuizzes(quizzes.data);
-
-      setQuizzes(response.data);
+      setQuizzes(response.data.quizzes);
 
     } catch (err) {
       setError('Failed to load your quizzes');

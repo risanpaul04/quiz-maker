@@ -4,7 +4,7 @@ const getAllQuizzes = async (req, res) => {
   try {
     const {
       page = 1,
-      limit = 12,
+      limit = 9,
       // search = "",
       sort = "createdAt",
       order = "desc",
@@ -22,7 +22,7 @@ const getAllQuizzes = async (req, res) => {
     const [quizzes, total] = await Promise.all([
       Quiz.find(filter)
         // .select('-questions.correctAnswer -questions.options.isCorrect')
-        .populate("creator", "name email")
+        .populate("creator", "username email")
         .sort(sortObj)
         .skip(skip)
         .limit(limitNum)
@@ -31,14 +31,24 @@ const getAllQuizzes = async (req, res) => {
       Quiz.countDocuments(filter),
     ]);
 
+    const pagination = {
+      totalItems: total,
+      totalPages: Math.ceil(total/limitNum),
+      currentPage: pageNum,
+      hasPreviousPage: pageNum > 1,
+      hasNextPage: pageNum < Math.ceil(total/limitNum),
+      pageSize: limitNum
+    }
+
     res.status(200).json({
       success: true,
       message: "quizzes sent successfully",
       data: {
         quizzes,
-        total,
+        pagination: pagination
       },
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,

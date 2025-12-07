@@ -7,10 +7,10 @@ const api = {
     const token = localStorage.getItem("accessToken");
 
     const config = {
-      method: 'GET',
+      method: "GET",
       ...options,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(token && { Authorization: `Bearer ${token}` }),
         ...options.headers,
       },
@@ -54,18 +54,30 @@ const api = {
         return true;
       }
       return false;
-
     } catch (error) {
       return false;
     }
   },
 
   post(url, reqBody) {
-    return this.request(`${API_URL}${url}`, { method: "POST", body: JSON.stringify(reqBody) });
+    return this.request(`${API_URL}${url}`, {
+      method: "POST",
+      body: JSON.stringify(reqBody),
+    });
   },
 
-  get(url) {
-    return this.request(`${API_URL}${url}`, { method: "GET" });
+  get(url, options = {}) {
+    let fullUrl = `${API_URL}${url}`;
+    // Handle query params
+    if (options.params && typeof options.params === "object") {
+      const query = new URLSearchParams(options.params).toString();
+      if (query) {
+        fullUrl += (fullUrl.includes("?") ? "&" : "?") + query;
+      }
+    }
+    // Remove params from options before passing to request
+    const { params, ...rest } = options;
+    return this.request(fullUrl, { method: "GET", ...rest });
   },
 };
 

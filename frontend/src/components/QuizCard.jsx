@@ -1,49 +1,66 @@
-import React from 'react';
-import { Link } from 'react-router';
+import React from "react";
+import { Link } from "react-router";
+import Badge from "./Badge";
+import { Calendar, FileText, User, ArrowRightFromLine } from "lucide-react";
 
-const QuizCard = ({ quiz }) => {
+const QuizCard = ({ quiz, className }) => {
+  const { title, description, questions, creator, createdAt } = quiz;
+
+  const totalQuestions = questions.length;
+  const dateCreated = new Date(createdAt).toLocaleDateString();
+
   return (
-    <div className="card transform hover:scale-105">
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <h3 className="text-xl font-bold text-gray-800 line-clamp-2">{quiz.title}</h3>
-          <span className="text-2xl">📝</span>
-        </div>
-        
+    <div
+      className={`bg-white rounded-xl shadow-lg p-6 flex flex-col
+        h-full justify-between transform hover:scale-105 ${className || ""}`}
+    >
+      {/* title & description */}
+      <div className="">
+        <h3 className="text-xl font-bold text-gray-800 line-clamp-2">
+          {title}
+        </h3>
         <p className="text-gray-600 mb-4 line-clamp-3">
-          {quiz.description || 'No description available'}
+          {description || "No description available"}
         </p>
-        
-        <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-          <div className="flex items-center space-x-4">
-            <span className="flex items-center">
-              <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
-              </svg>
-              {quiz.questions?.length || quiz.questionCount || 0} Questions
-            </span>
-            <span className="flex items-center">
-              <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-              </svg>
-              {quiz.creator?.name || quiz.creatorInfo?.name || 'Anonymous'}
-            </span>
-          </div>
+      </div>
+
+      <div>
+        {/* bagdes */}
+        <div className="w-full flex flex-wrap justify-between items-center">
+          <Badge
+            icon={Calendar}
+            text={dateCreated}
+            bgColor="bg-red-100"
+            textColor="text-red-700"
+          ></Badge>
+
+          <Badge
+            icon={FileText}
+            text={`${totalQuestions} questions`}
+            bgColor="bg-yellow-100"
+            textColor="text-yellow-700"
+          ></Badge>
+
+          <Badge
+            icon={User}
+            text={creator.username || 'anonymous'}
+            bgColor="bg-green-100"
+            textColor="text-green-700"
+            className="font-semibold"
+          ></Badge>
         </div>
-        
-        {quiz.attemptCount !== undefined && (
-          <div className="text-xs text-gray-500 mb-4">
-            {quiz.attemptCount} attempts • Avg: {quiz.averageScore?.toFixed(1) || 0}
-          </div>
-        )}
-        
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-gray-400">
-            {new Date(quiz.createdAt).toLocaleDateString()}
-          </span>
-          <Link to={`/quiz/${quiz._id}`} className="btn btn-primary text-sm">
-            Take Quiz →
+
+        <div
+          className="my-2 w-fit p-2 rounded-full border-1 border-blue-600 
+            bg-blue-100 text-blue-600 font-bold transform hover:scale-105 transition duration-75
+            hover:bg-blue-300
+            "
+        >
+          <Link
+            to={`/quiz/${quiz._id}`}
+            className="btn btn-primary text-md flex gap-2 items-center"
+          >
+            Take Quiz <ArrowRightFromLine />
           </Link>
         </div>
       </div>

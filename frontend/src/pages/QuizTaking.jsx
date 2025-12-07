@@ -74,6 +74,7 @@ const QuizTaking = () => {
       });
     } catch (err) {
       setError('Failed to submit quiz');
+      setError(`${err.message}`);
       setSubmitting(false);
     }
   };
@@ -187,22 +188,24 @@ className="bg-gradient-to-r from-primary-500 to-purple-600 h-3 rounded-full tran
         ))}
       </div>
 
-      {currentQuestion === quiz.questions.length - 1 ? (
-        <button
-          onClick={handleSubmit}
-          disabled={submitting}
-          className="btn btn-primary disabled:opacity-50"
-        >
-          {submitting ? 'Submitting...' : 'Submit Quiz'}
-        </button>
-      ) : (
+
         <button
           onClick={handleNext}
           className="btn btn-primary"
+          {...currentQuestion <= !quiz.questions.length - 1 ? true: false}
         >
           Next →
         </button>
-      )}
+      <div>{currentQuestion === quiz.questions.length-1 ? (
+          <button
+          onClick={handleSubmit}
+          disabled={submitting}
+          className="btn btn-primary outline-none ring-2 ring-blue-600 bg-blue-100 text-blue-600 rounded-lg disabled:opacity-50 "
+        >
+          {submitting ? 'Submitting...' : 'Submit Quiz'}
+
+        </button>
+      ):}</div>
     </div>
   </div>
 </div>
