@@ -41,6 +41,9 @@ const Navbar = () => {
                 <Link to="/my-results" className="text-gray-700 hover:text-primary-600 font-medium transition">
                   My Results
                 </Link>
+                <Link to="/roadmap" className="text-gray-700 hover:text-primary-600 font-medium transition">
+                  Roadmap
+                </Link>
                 <div className="flex items-center space-x-3">
                   <span className="text-gray-700 font-medium">{user.name}</span>
                   <button onClick={handleLogout} className="btn btn-outline text-sm">
@@ -81,6 +84,7 @@ const Navbar = () => {
             <Link to="/quizzes" className="block py-2 text-gray-700 hover:text-primary-600" onClick={() => setIsOpen(false)}>
               All Quizzes
             </Link>
+
             {user ? (
               <>
                 <Link to="/create-quiz" className="block py-2 text-gray-700 hover:text-primary-600" onClick={() => setIsOpen(false)}>
@@ -92,6 +96,11 @@ const Navbar = () => {
                 <Link to="/my-results" className="block py-2 text-gray-700 hover:text-primary-600" onClick={() => setIsOpen(false)}>
                   My Results
                 </Link>
+                <Link to="/roadmap" className="block py-2 text-gray-700 hover:text-primary-600" onClick={() => setIsOpen(false)}>
+                  Roadmap
+                </Link>
+
+
                 <div className="py-2 text-gray-700 font-medium">{user.name}</div>
                 <button onClick={handleLogout} className="w-full btn btn-outline text-sm">
                   Logout

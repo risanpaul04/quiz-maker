@@ -117,7 +117,7 @@ const MyQuizzes = () => {
                       <div className="flex justify-end gap-2">
                         <Link
                           to={`/quiz/${quiz._id}`}
-                          className="px-3 py-1 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition text-sm font-medium"
+                          className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-sm font-medium"
                         >
                           View
                         </Link>
@@ -163,14 +163,14 @@ const MyQuizzes = () => {
                 <div className="flex gap-2">
                   <Link
                     to={`/quiz/${quiz._id}`}
-                    className="btn btn-primary flex-1 text-sm"
+                    className="btn btn-primary flex-1 text-sm text-center bg-blue-600  text-white rounded-md"
                   >
                     View
                   </Link>
                   <button
                     onClick={() => handleDelete(quiz._id)}
                     disabled={deleteLoading === quiz._id}
-                    className="btn btn-danger flex-1 text-sm"
+                    className="btn btn-danger flex-1 text-sm text-center bg-red-600 text-white rounded-md"
                   >
                     {deleteLoading === quiz._id ? 'Deleting...' : 'Delete'}
                   </button>

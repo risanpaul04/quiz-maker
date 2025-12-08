@@ -4,7 +4,7 @@ const Pagination = ({
   currentPage = 1,
   totalPages = 1,
   onPageChange = () => {},
-  hasPrevPage = false,
+  hasPreviousPage = false,
   hasNextPage = false,
   maxButtons = 5,
 }) => {
@@ -32,13 +32,13 @@ const Pagination = ({
     <nav className="flex items-center -space-x-px" aria-label="Pagination">
       <button
         type="button"
-        className="min-h-9.5 min-w-9.5 py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 text-sm first:rounded-s-lg last:rounded-e-lg border border-gray-200 text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
+        disabled={!hasPreviousPage}
+        className="min-h-9.5 min-w-9.5 py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 text-sm first:rounded-s-lg last:rounded-e-lg border border-gray-200 text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
         aria-label="Previous"
-        disabled={!hasPrevPage}
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={() => hasPreviousPage && onPageChange(currentPage - 1)}
       >
         <ChevronLeft />
-        <span className="hidden sm:block">Previous</span>
+        <span className="hidden sm:block"> Prev</span>
       </button>
 
       {pages[0] > 1 && (
@@ -47,6 +47,7 @@ const Pagination = ({
             type="button"
             className="min-h-9.5 min-w-9.5 flex justify-center items-center border border-gray-200 text-gray-800 hover:bg-gray-100 py-2 px-3 text-sm first:rounded-s-lg last:rounded-e-lg focus:outline-hidden focus:bg-gray-100"
             onClick={() => onPageChange(1)}
+            disabled={currentPage === 1}
           >
             1
           </button>
@@ -60,11 +61,12 @@ const Pagination = ({
           type="button"
           className={`min-h-9.5 min-w-9.5 flex justify-center items-center border border-gray-200 py-2 px-3 text-sm first:rounded-s-lg last:rounded-e-lg focus:outline-hidden ${
             page === currentPage
-              ? 'bg-gray-200 text-gray-800 dark:bg-neutral-600 dark:text-white'
-              : 'text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-white/10'
+              ? 'bg-gray-200 text-gray-800'
+              : 'text-gray-800 hover:bg-gray-100'
           }`}
           aria-current={page === currentPage ? 'page' : undefined}
-          onClick={() => onPageChange(page)}
+          onClick={() => page !== currentPage && onPageChange(page)}
+          disabled={page === currentPage}
         >
           {page}
         </button>
@@ -77,6 +79,7 @@ const Pagination = ({
             type="button"
             className="min-h-9.5 min-w-9.5 flex justify-center items-center border border-gray-200 text-gray-800 hover:bg-gray-100 py-2 px-3 text-sm first:rounded-s-lg last:rounded-e-lg focus:outline-hidden focus:bg-gray-100"
             onClick={() => onPageChange(totalPages)}
+            disabled={currentPage === totalPages}
           >
             {totalPages}
           </button>
@@ -85,10 +88,10 @@ const Pagination = ({
 
       <button
         type="button"
-        className="min-h-9.5 min-w-9.5 py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 text-sm first:rounded-s-lg last:rounded-e-lg border border-gray-200 text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
+        className="min-h-9.5 min-w-9.5 py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 text-sm first:rounded-s-lg last:rounded-e-lg border border-gray-200 text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
         aria-label="Next"
         disabled={!hasNextPage}
-        onClick={() => onPageChange(currentPage + 1)}
+        onClick={() => hasNextPage && onPageChange(currentPage + 1)}
       >
         <span className="hidden sm:block">Next</span>
         <ChevronRight />

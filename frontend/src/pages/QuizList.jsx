@@ -13,9 +13,15 @@ const QuizList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
-  const [totalQuiz, setTotalQuiz] = useState(0);
   const [page, setPage] = useState(1);
-  const [pagination, setPagination] = useState({});
+  const [pagination, setPagination] = useState({
+    totalItems: 0,
+    currentPage: 1,
+    totalPages: 1,
+    hasPreviousPage: false,
+    hasNextPage: false,
+    maxButtons: 5
+  });
 
   useEffect(() => {
     fetchQuizzes();
@@ -31,10 +37,8 @@ const QuizList = () => {
       });
 
       // Handle both response formats
-
-      if (response.data.success) {
+      if (response.success) {
         setQuizzes(response.data.quizzes);
-        // setTotalQuiz(parseInt(response.data.total, 10));
         setPagination(response.data.pagination);
       } else {
         setQuizzes(response.data.quizzes);
@@ -115,39 +119,13 @@ const QuizList = () => {
 
           {/* Pagination */}
           <div>
-            <Pagination
-              currentPage={pagination.currentPage}
-              totalPages={pagination.totalPages}
-              hasPrevPage={pagination.hasPrevPage}
-              hasNextPage={pagination.hasNextPage}
-              onPageChange={setPage}
-            > </Pagination>
-            <p className="text-black">{pagination.totalPages}</p>
+            {pagination && pagination.totalPages > 1 && (
+              <Pagination
+                {...pagination}
+                onPageChange={setPage}
+              />
+            )}
           </div>
-
-          {/* { pagination.totalPages > 1 && (
-            <div className="flex justify-center items-center gap-4 bg-black text-white backdrop-blur-lg rounded-xl p-6">
-              <button
-                onClick={() => setPage(page - 1)}
-                disabled={!pagination.hasPrevPage}
-                className="btn btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Previous
-              </button>
-
-              <span className="text-white font-medium">
-                Page {pagination.currentPage} of {pagination.totalPages}
-              </span>
-
-              <button
-                onClick={() => setPage(page + 1)}
-                disabled={!pagination.hasNextPage}
-                className="btn btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Next
-              </button>
-            </div>
-          )} */}
         </>
       )}
     </div>

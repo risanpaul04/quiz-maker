@@ -45,7 +45,7 @@ const getAllQuizzes = async (req, res) => {
       message: "quizzes sent successfully",
       data: {
         quizzes,
-        pagination: pagination
+        pagination
       },
     });
 
@@ -171,7 +171,7 @@ const updateQuiz = async (req, res) => {
 const deleteQuiz = async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
-
+    
     if (!quiz) {
       return res.status(404).json({
         success: false,

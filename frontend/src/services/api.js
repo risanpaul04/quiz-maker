@@ -79,6 +79,12 @@ const api = {
     const { params, ...rest } = options;
     return this.request(fullUrl, { method: "GET", ...rest });
   },
+
+  delete(url, options = {}) {
+    let fullUrl = `${API_URL}${url}`;
+
+    return this.request(fullUrl, {method: "DELETE"});
+  },
 };
 
 // const api1 = axios.create({

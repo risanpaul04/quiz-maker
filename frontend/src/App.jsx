@@ -12,6 +12,7 @@ import QuizTaking from './pages/QuizTaking';
 import QuizResults from './pages/QuizResults';
 import MyQuizzes from './pages/MyQuizzes';
 import MyResults from './pages/MyResults';
+import Roadmap from './pages/Roadmap.jsx';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -72,6 +73,12 @@ function App() {
                     <MyResults />
                   </PrivateRoute>
                 } 
+              />
+              <Route
+                path='/roadmap'
+                element={
+                  <Roadmap />
+                }
               />
             </Routes>
           </div>

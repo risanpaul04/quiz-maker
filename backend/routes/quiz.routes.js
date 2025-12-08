@@ -16,6 +16,6 @@ quizRouter.get('/all-quizzes', getAllQuizzes);
 quizRouter.get('/my-quizzes', verifyToken, getUserQuizzes);
 quizRouter.get('/:id', getQuizById);
 quizRouter.post('/:id', verifyToken, authorizeRoles('admin', 'editor'), updateQuiz);
-quizRouter.delete('/:id', authorizeRoles('admin', 'editor'), deleteQuiz);
+quizRouter.delete('/:id', verifyToken, authorizeRoles('admin', 'editor'), deleteQuiz);
 
 export default quizRouter;
