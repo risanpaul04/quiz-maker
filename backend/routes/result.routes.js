@@ -9,7 +9,7 @@ import {
 
 const resultRouter = express.Router();
 
-resultRouter.post('/', verifyToken, submitResult);
+resultRouter.post('/submit', verifyToken, submitResult);
 resultRouter.get('/my-results', verifyToken, getUserResults);
 resultRouter.get('/:id', getResultById);
 resultRouter.delete('/:id', verifyToken, deleteResult);

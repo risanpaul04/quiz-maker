@@ -16,16 +16,12 @@ const MyResults = () => {
   const fetchMyResults = async () => {
     try {
       const response = await resultAPI.getUserResults();
-      setResults(response.data);
+      setResults(response.data.results);
     } catch (err) {
       setError('Failed to load your results');
     } finally {
       setLoading(false);
     }
-  };
-
-  const calculatePercentage = (score, total) => {
-    return ((score / total) * 100).toFixed(1);
   };
 
   const getGrade = (percentage) => {
@@ -41,10 +37,10 @@ const MyResults = () => {
   }
 
   const averageScore = results.length > 0
-    ? (results.reduce((acc, r) => acc + parseFloat(calculatePercentage(r.score, r.totalQuestions)), 0) / results.length).toFixed(1)
+    ? (results.reduce((acc, r) => acc + (r.percentage || 0), 0) / results.length).toFixed(1)
     : 0;
 
-  const passedCount = results.filter(r => calculatePercentage(r.score, r.totalQuestions) >= 50).length;
+  const passedCount = results.filter(r => (r.percentage || 0) >= 50).length;
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -94,7 +90,7 @@ const MyResults = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {results.map((result) => {
-            const percentage = calculatePercentage(result.score, result.totalQuestions);
+            const percentage = result.percentage || 0;
             const { grade, color } = getGrade(percentage);
 
             return (

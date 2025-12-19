@@ -69,8 +69,8 @@ const QuizTaking = () => {
       };
 
       const response = await resultAPI.submitResult(resultData);
-      navigate('/results/latest', {
-        state: { result: response.data.result, quiz }
+      navigate('/my-results', {
+        state: { result: response.result, quiz }
       });
     } catch (err) {
       setError('Failed to submit quiz');
@@ -132,15 +132,18 @@ className="bg-gradient-to-r from-primary-500 to-purple-600 h-3 rounded-full tran
           <div
             key={index}
             onClick={() => handleAnswerSelect(question._id, option.text)}
-            className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+            className={`p-4 rounded-xl border-2 cursor-pointer transition-all select-none ${
               isSelected
-                ? 'border-primary-500 bg-primary-50'
+                ? 'border-green-600 bg-green-100 shadow-green-200 shadow-sm'
                 : 'border-gray-200 hover:border-primary-300 hover:bg-gray-50'
             }`}
+            tabIndex={0}
+            role="button"
+            aria-pressed={isSelected}
           >
             <div className="flex items-center">
-              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mr-3 ${
-                isSelected ? 'border-primary-500 bg-primary-500' : 'border-gray-300'
+              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mr-3 transition-all ${
+                isSelected ? 'border-green-600 bg-green-500' : 'border-gray-300'
               }`}>
                 {isSelected && (
                   <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -148,7 +151,7 @@ className="bg-gradient-to-r from-primary-500 to-purple-600 h-3 rounded-full tran
                   </svg>
                 )}
               </div>
-              <span className="flex-1 font-medium text-gray-800">
+              <span className={`flex-1 font-medium text-gray-800 ${isSelected ? 'text-green-700' : ''}`}>
                 {String.fromCharCode(65 + index)}. {option.text}
               </span>
             </div>
@@ -160,49 +163,79 @@ className="bg-gradient-to-r from-primary-500 to-purple-600 h-3 rounded-full tran
 
   {/* Navigation */}
   <div className="bg-white rounded-2xl shadow-xl p-6">
-    <div className="flex justify-between items-center mb-4">
-      <button
-        onClick={handlePrevious}
-        disabled={currentQuestion === 0}
-        className="btn btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        ← Previous
-      </button>
-
-      <div className="flex gap-2 flex-wrap justify-center">
-        {quiz.questions.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentQuestion(index)}
-            className={`w-10 h-10 rounded-lg font-medium transition-all ${
-              index === currentQuestion
-                ? 'bg-primary-500 text-white'
-                : answers[quiz.questions[index]._id]
-                ? 'bg-green-500 text-white'
-                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
+    <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center mb-4">
+      <div className="flex gap-2">
+        <button
+          onClick={() => setCurrentQuestion(0)}
+          disabled={currentQuestion === 0}
+          className="btn btn-secondary px-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          title="First question"
+        >
+          ⏮ First
+        </button>
+        <button
+          onClick={handlePrevious}
+          disabled={currentQuestion === 0}
+          className="btn btn-secondary px-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          title="Previous question"
+        >
+          ← Prev
+        </button>
       </div>
 
-      {currentQuestion === quiz.questions.length - 1 ? (
+      <div className="flex gap-1 flex-wrap justify-center max-w-full overflow-x-auto">
+        {quiz.questions.map((q, index) => {
+          const isActive = index === currentQuestion;
+          const isAnswered = !!answers[q._id];
+          return (
+            <button
+              key={q._id}
+              onClick={() => setCurrentQuestion(index)}
+              aria-current={isActive ? 'true' : undefined}
+              aria-label={`Go to question ${index + 1}${isAnswered ? ', answered' : ''}`}
+              className={`w-10 h-10 rounded-lg font-medium border transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 ${
+                isActive
+                  ? 'bg-primary-500 text-white border-primary-600 shadow-lg'
+                  : isAnswered
+                  ? 'bg-green-500 text-white border-green-600'
+                  : 'bg-gray-200 text-gray-600 border-gray-300 hover:bg-gray-300'
+              }`}
+              tabIndex={0}
+            >
+              {index + 1}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="flex gap-2">
+        {currentQuestion === quiz.questions.length - 1 ? (
+          <button
+            onClick={handleSubmit}
+            disabled={submitting}
+            className="btn btn-primary px-2 py-3 text-nowrap outline-none ring-2 ring-blue-600 bg-blue-100 text-blue-600 rounded disabled:opacity-50 "
+          >
+            {submitting ? 'Submitting...' : 'Submit Quiz'}
+          </button>
+        ) : (
+          <button
+            onClick={handleNext}
+            disabled={currentQuestion === quiz.questions.length - 1}
+            className="btn btn-primary px-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Next question"
+          >
+            Next →
+          </button>
+        )}
         <button
-          onClick={handleSubmit}
-          disabled={submitting}
-          className="btn btn-primary px-2 py-3 text-nowrap outline-none ring-2 ring-blue-600 bg-blue-100 text-blue-600 rounded disabled:opacity-50 "
+          onClick={() => setCurrentQuestion(quiz.questions.length - 1)}
+          disabled={currentQuestion === quiz.questions.length - 1}
+          className="btn btn-secondary px-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          title="Last question"
         >
-          {submitting ? 'Submitting...' : 'Submit Quiz'}
+          Last ⏭
         </button>
-      ) : (
-        <button
-          onClick={handleNext}
-          className="btn btn-primary"
-        >
-          Next →
-        </button>
-      )}
+      </div>
     </div>
   </div>
 </div>

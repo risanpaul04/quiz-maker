@@ -8,6 +8,7 @@ import {
   JWT_REFRESH_SECRET,
   JWT_REFRESH_EXPIRY,
 } from "../config/env.js";
+
 import User from "../models/user.model.js";
 
 const generateAccessToken = (user) => {
@@ -49,7 +50,7 @@ const setRefreshTokenCookie = (res, refreshToken) => {
     httpOnly: true,
     path: "/",
     secure: NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: NODE_ENV=== 'development'?"strict":'none',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 };
@@ -59,7 +60,7 @@ const clearRefreshTokenCookie = (res) => {
     httpOnly: true,
     path: "/",
     secure: NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: NODE_ENV=== 'development'?"strict":'none',
   });
 };
 
@@ -218,4 +219,19 @@ const logout = async (req, res, next) => {
   }
 };
 
-export { signup, login, logout };
+const getCurrentUser = async (req, res) => {
+  try {
+    if(req.user) {
+      return res.status(200).json({
+        message: 'User retrieved successfully',
+        data: {
+          ...req.user
+        }
+      })
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+export { signup, login, logout, getCurrentUser };

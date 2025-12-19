@@ -14,14 +14,14 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white/95 backdrop-blur-sm shadow-lg sticky top-0 z-50">
+    <nav className="bg-amber-400 backdrop-blur-sm shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <span className="text-2xl">📝</span>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">
-              Quiz Maker
+            <span className="text-xl font-bold bg-gradient-to-r from-amber-800 to-purple-600 bg-clip-text text-transparent">
+              Quizzard
             </span>
           </Link>
 
@@ -32,10 +32,10 @@ const Navbar = () => {
             </Link>
             {user ? (
               <>
-                <Link to="/create-quiz" className="text-gray-700 hover:text-primary-600 font-medium transition">
+                <Link to="/create-quiz" className="text-gray-700 hover:text-primary-600 font-bold transition">
                   Create Quiz
                 </Link>
-                <Link to="/my-quizzes" className="text-gray-700 hover:text-primary-600 font-medium transition">
+                <Link to="/my-quizzes" className="text-gray-700 hover:text-primary-600 font-semibold transition">
                   My Quizzes
                 </Link>
                 <Link to="/my-results" className="text-gray-700 hover:text-primary-600 font-medium transition">
@@ -53,10 +53,10 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link to="/login" className="text-gray-700 hover:text-primary-600 font-medium transition">
+                <Link to="/login" className="text-gray-700 hover:text-primary-600 font-bold transition">
                   Login
                 </Link>
-                <Link to="/register" className="btn btn-primary text-sm">
+                <Link to="/register" className="btn btn-primary font-semibold">
                   Register
                 </Link>
               </>

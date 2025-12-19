@@ -21,13 +21,13 @@ export const AuthProvider = ({ children }) => {
 
   const checkLoggedIn = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('accessToken');
       if (token) {
         const response = await authAPI.getCurrentUser();
-        setUser(response.data);
+        setUser(response.data.user);
       }
     } catch (error) {
-      localStorage.removeItem('token');
+      localStorage.removeItem('accessToken');
     } finally {
       setLoading(false);
     }
@@ -42,14 +42,20 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (username, email, password) => {
     const response = await authAPI.signup({ username, email, password });
-    localStorage.setItem('token', response.data.accessToken);
+    localStorage.setItem('accessToken', response.data.accessToken);
     setUser(response.data.user);
     return response.data;
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
+  const logout = async () => {
+    try {
+      await authAPI.logout();
+      localStorage.removeItem('accessToken');
+      setUser(null);
+    } catch (error) {
+      // ignore network/logout errors — still clear local state
+    }
+
   };
 
   const value = {

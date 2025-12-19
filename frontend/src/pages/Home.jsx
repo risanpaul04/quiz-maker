@@ -43,10 +43,11 @@ const Home = () => {
       {/* Hero Section */}
       <section className="text-center py-20">
         <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-12 shadow-2xl">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Welcome to <span className="bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">Quiz Maker</span>
+          <h1 className="flex flex-col text-5xl md:text-6xl font-bold text-white mb-6">
+            <span className="bg-gradient-to-r from-blue-300 to-blue-700 bg-clip-text text-transparent">Welcome to</span>
+            <span className="bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text text-transparent">Quizzard</span>
           </h1>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl font-bold mb-8 max-w-2xl mx-auto bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
             Create engaging quizzes and test your knowledge with our interactive platform
           </p>
           

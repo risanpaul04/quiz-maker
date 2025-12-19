@@ -10,6 +10,6 @@ const mainRouter = express.Router();
 mainRouter.use('/auth', authRouter);
 mainRouter.use('/users', userRouter);
 mainRouter.use('/quizzes', quizRouter);
-mainRouter.use('/result', resultRouter);
+mainRouter.use('/results', resultRouter);
 
 export default mainRouter;
